@@ -204,7 +204,7 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     // Load receivables
     const loadReceivables = async () => {
       try {
-        const res = await axiosInstance.get(`${API}/receivables`);
+        const res = await axiosInstance.get('/receivables');
         setReceivables(res.data);
       } catch (err) {
         console.error('❌ Error loading receivables', err);
@@ -213,7 +213,7 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
     loadReceivables();
   }, []);
-  
+
   useEffect(() => {
     const loadPayables = async () => {
       try {
@@ -319,7 +319,7 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   // Project functions
-  const API = 'http://localhost:5000/api';
+  const API = '';  
   const fetchProjects = async () => {
     try {
       const res = await axiosInstance.get(`${API}/projects`);
