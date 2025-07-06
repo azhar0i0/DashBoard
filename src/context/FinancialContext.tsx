@@ -247,7 +247,7 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   const updateRevenue = async (id: number, updatedEntry: Partial<RevenueEntry>) => {
     try {
-      await axiosInstance.put(`/api/revenue/${id}`, updatedEntry);
+      await axiosInstance.put(`/revenue/${id}`, updatedEntry);
       setRevenue(prev => prev.map(item => item._id === id ? { ...item, ...updatedEntry } : item));
     } catch (error) {
       console.error('Error updating revenue:', error);
@@ -269,15 +269,25 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     setExpenses(prev => [...prev, newEntry]);
   };
 
-  const updateExpense = (id: number, updatedEntry: Partial<ExpenseEntry>) => {
-    setExpenses(prev => prev.map(item =>
-      item.id === id ? { ...item, ...updatedEntry } : item
-    ));
-  };
+  const updateExpense = async (id: string, updatedExpense: any) => {
+  try {
+    const res = await axiosInstance.put(`/expenses/${id}`, updatedExpense);
+    setExpenses(prev => prev.map(e => e._id === id ? res.data : e));
+    return res.data;
+  } catch (error) {
+    console.error('Update error:', {
+      url: error.config?.url,
+      status: error.response?.status,
+      data: error.response?.data
+    });
+    throw error;
+  }
+};
 
-  const deleteExpense = (id: number) => {
-    setExpenses(prev => prev.filter(item => item.id !== id));
-  };
+  const deleteExpense = async (id) => {
+  await axiosInstance.delete(`/expenses/${id}`); // Remove /api
+  setExpenses((prev) => prev.filter((e) => e._id !== id)); // Also fix e.id to e._id
+};
 
   // Employee functions
   const fetchEmployees = async () => {
@@ -398,10 +408,11 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     const res = await axiosInstance.post('payables', data);
     setPayables((prev) => [...prev, res.data]);
   };
-  const updatePayable = async (id: string, updatedData) => {
+  const updatePayable = async (id: number, updatedData) => {
+    console.log(` hehe : ${id}`)
     const res = await axiosInstance.put(`/payables/${id}`, updatedData);
     setPayables((prev) =>
-      prev.map((item) => (item._id === id ? res.data : item))
+      prev.map((item) => (item._id === id ? { ...item, ...res.data } : item))
     );
   };
   const deletePayable = async (id) => {

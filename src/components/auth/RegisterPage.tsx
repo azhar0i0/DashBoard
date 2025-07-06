@@ -114,11 +114,6 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ onRegister, onSwitchToLogin
                   <SelectTrigger className="h-12 bg-white/10 border-white/30 text-white focus:border-blue-400 dark:focus:border-blue-400 backdrop-blur-sm [&>span]:text-white">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-slate-800 border-slate-700">
-                    <SelectItem value="employee" className="text-white hover:bg-slate-700">Employee</SelectItem>
-                    <SelectItem value="accountant" className="text-white hover:bg-slate-700">Accountant</SelectItem>
-                    <SelectItem value="admin" className="text-white hover:bg-slate-700">Administrator</SelectItem>
-                  </SelectContent>
                 </Select>
               </div>
 

@@ -72,7 +72,7 @@ const Payables: React.FC = () => {
   };
 
   const handleEditPayable = () => {
-    console.error("❌ Cannot update payable: ID is missing");
+    console.log(editingPayable._id + "---------------")
     if (!editingPayable.vendor || !editingPayable.description || !editingPayable.amount || !editingPayable.dueDate) {
       toast({
         title: "Error",
@@ -82,13 +82,14 @@ const Payables: React.FC = () => {
       return;
     }
 
-    updatePayable(editingPayable.id, {
-      vendor: editingPayable.vendor,
-      description: editingPayable.description,
-      amount: parseFloat(editingPayable.amount),
-      dueDate: editingPayable.dueDate,
-      status: editingPayable.status,
-    });
+    updatePayable(editingPayable._id, {
+  vendor: editingPayable.vendor,
+  description: editingPayable.description,
+  amount: parseFloat(editingPayable.amount),
+  dueDate: editingPayable.dueDate,
+  status: editingPayable.status,
+});
+
 
     toast({
       title: "Success",
@@ -106,13 +107,13 @@ const Payables: React.FC = () => {
     });
   };
 
-  const handleMarkPaid = (id: string) => {
+  const handleMarkPaid = (id: number) => {
   if (!id) {
     toast({ title: "Error", description: "Payable ID is missing", variant: "destructive" });
     return;
   }
 
-  const payable = payables.find(p => p.id === id);
+  const payable = payables.find(p => p._id === id);
   if (!payable) {
     toast({ title: "Error", description: "Payable not found", variant: "destructive" });
     return;
@@ -212,7 +213,7 @@ const Payables: React.FC = () => {
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               {filteredPayables.map((item) => (
-                <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                <tr key={item._id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                   <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">{item.date}</td>
                   <td className="px-6 py-4 text-sm font-semibold text-gray-900 dark:text-gray-100">{item.vendor}</td>
                   <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">{item.description}</td>
@@ -289,65 +290,65 @@ const Payables: React.FC = () => {
 
       {/* Add Payable Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 w-full max-w-md mx-4">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Add New Payable</h2>
-            <div className="space-y-4">
-              <input
-                type="text"
-                placeholder="Vendor Name"
-                value={newPayable.vendor}
-                onChange={(e) => setNewPayable({ ...newPayable, vendor: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-              <input
-                type="text"
-                placeholder="Description"
-                value={newPayable.description}
-                onChange={(e) => setNewPayable({ ...newPayable, description: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-              <input
-                type="number"
-                placeholder="Amount"
-                value={newPayable.amount}
-                onChange={(e) => setNewPayable({ ...newPayable, amount: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-              <input
-                type="date"
-                placeholder="Due Date"
-                value={newPayable.dueDate}
-                onChange={(e) => setNewPayable({ ...newPayable, dueDate: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-              <select
-                value={newPayable.status}
-                onChange={(e) => setNewPayable({ ...newPayable, status: e.target.value as 'pending' | 'paid' | 'overdue' })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="pending">Pending</option>
-                <option value="paid">Paid</option>
-                <option value="overdue">Overdue</option>
-              </select>
-            </div>
-            <div className="flex justify-end space-x-3 mt-6">
-              <button
-                onClick={() => setShowAddModal(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleAddPayable}
-                className="px-4 py-2 bg-gradient-to-r from-blue-600 to-emerald-600 text-white rounded-lg hover:from-blue-700 hover:to-emerald-700 transition-all"
-              >
-                Add Payable
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md mx-4">
+      <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Add New Payable</h2>
+      <div className="space-y-4">
+        <input
+          type="text"
+          placeholder="Vendor Name"
+          value={newPayable.vendor}
+          onChange={(e) => setNewPayable({ ...newPayable, vendor: e.target.value })}
+          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+        />
+        <input
+          type="text"
+          placeholder="Description"
+          value={newPayable.description}
+          onChange={(e) => setNewPayable({ ...newPayable, description: e.target.value })}
+          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+        />
+        <input
+          type="number"
+          placeholder="Amount"
+          value={newPayable.amount}
+          onChange={(e) => setNewPayable({ ...newPayable, amount: e.target.value })}
+          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+        />
+        <input
+          type="date"
+          value={newPayable.dueDate}
+          onChange={(e) => setNewPayable({ ...newPayable, dueDate: e.target.value })}
+          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+        />
+        <select
+          value={newPayable.status}
+          onChange={(e) => setNewPayable({ ...newPayable, status: e.target.value as 'pending' | 'paid' | 'overdue' })}
+          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+        >
+          <option value="pending">Pending</option>
+          <option value="paid">Paid</option>
+          <option value="overdue">Overdue</option>
+        </select>
+      </div>
+      <div className="flex justify-end space-x-3 mt-6">
+        <button
+          onClick={() => setShowAddModal(false)}
+          className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={handleAddPayable}
+          className="px-4 py-2 bg-gradient-to-r from-blue-600 to-emerald-600 text-white rounded-lg hover:from-blue-700 hover:to-emerald-700 transition-all"
+        >
+          Add Payable
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
 
       {/* Edit Payable Modal */}
       {editingPayable && (

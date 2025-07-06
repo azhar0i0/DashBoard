@@ -129,30 +129,23 @@ const Expenses: React.FC = () => {
   };
 
   const handleEditExpense = () => {
-    if (!editingExpense.description || !editingExpense.amount || !editingExpense.category || !editingExpense.date) {
-      toast({
-        title: "Error",
-        description: "Please fill in all required fields",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    updateExpense(editingExpense.id, {
-      description: editingExpense.description,
-      amount: parseFloat(editingExpense.amount),
-      category: editingExpense.category,
-      date: editingExpense.date,
-      status: editingExpense.status,
-    });
-
+  if (!editingExpense._id) { // Changed from editingExpense.id
     toast({
-      title: "Success",
-      description: "Expense entry updated successfully",
+      title: "Error",
+      description: "Invalid expense ID",
+      variant: "destructive",
     });
+    return;
+  }
 
-    setEditingExpense(null);
-  };
+  updateExpense(editingExpense._id, { // Changed from editingExpense.id
+    description: editingExpense.description,
+    amount: parseFloat(editingExpense.amount),
+    category: editingExpense.category,
+    date: editingExpense.date,
+    status: editingExpense.status,
+  });
+};
 
   const handleDelete = (id: string | number | undefined) => {
     if (!id) {
@@ -173,10 +166,31 @@ const Expenses: React.FC = () => {
     setExpenses((prev) => [...prev, res.data]);
   };
 
-  const updateExpense = async (id, updatedExpense) => {
+  const updateExpense = async (id: string, updatedExpense: any) => {
+  try {
+    // Debug: log what we're sending
+    console.log('Updating expense:', { id, updatedExpense });
+    
     const res = await axiosInstance.put(`/expenses/${id}`, updatedExpense);
-    setExpenses((prev) => prev.map((e) => (e.id === id ? res.data : e)));
-  };
+    
+    // Debug: log the response
+    console.log('Update response:', res.data);
+    
+    setExpenses(prev => prev.map(e => e._id === id ? res.data : e));
+    return res.data;
+  } catch (error) {
+    console.error('Update error:', {
+      error: error.response?.data || error.message,
+      status: error.response?.status,
+      request: {
+        url: error.config?.url,
+        method: error.config?.method,
+        data: error.config?.data
+      }
+    });
+    throw error;
+  }
+};
 
   const deleteExpense = async (id) => {
     await axiosInstance.delete(`/expenses/${id}`);

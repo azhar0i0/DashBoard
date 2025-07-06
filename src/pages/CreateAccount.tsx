@@ -12,8 +12,7 @@ const CreateAccount: React.FC = () => {
     const newUser = {
       id: Date.now().toString(),
       name: userData.name,
-      email: userData.email,
-      role: userData.role as 'admin' | 'accountant' | 'employee'
+      email: userData.email
     };
     login(newUser, userData.password || 'defaultPassword');
   };

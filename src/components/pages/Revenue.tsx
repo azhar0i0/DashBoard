@@ -212,7 +212,7 @@ const Revenue: React.FC = () => {
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               {filteredAndSortedRevenue.length > 0 ? (
                 filteredAndSortedRevenue.map((item) => (
-                  <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                  <tr key={item._id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">{item.date}</td>
                     <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">{item.description}</td>
                     <td className="px-6 py-4 text-sm font-semibold text-emerald-600 dark:text-emerald-400">
@@ -231,7 +231,7 @@ const Revenue: React.FC = () => {
                     <td className="px-6 py-4">
                       <div className="flex space-x-2">
                         <button 
-                          onClick={() => handleStatusChange(item.id, 'received')}
+                          onClick={() => handleStatusChange(item._id, 'received')}
                           className="text-emerald-600 hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300 text-sm font-medium"
                           disabled={item.status === 'received'}
                         >
